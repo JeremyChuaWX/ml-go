@@ -1,6 +1,12 @@
 package mlgo
 
-import "math/rand"
+import (
+	"errors"
+	"fmt"
+	"math/rand"
+)
+
+var shapeError = errors.New("matrix shapes are incompatible")
 
 type matrix struct {
 	Rows int
@@ -56,3 +62,18 @@ func Transpose(m *matrix) *matrix {
 }
 
 // bivariate
+
+func Multiply(m *matrix, n *matrix) (*matrix, error) {
+	if m.Cols != n.Rows {
+		return nil, fmt.Errorf("%w: m=%v, n=%v", shapeError, m, n)
+	}
+	result := ZeroMatrix(m.Rows, n.Cols)
+	for row := range result.Rows {
+		for col := range result.Cols {
+			for i := 0; i < m.Cols; i++ {
+				result.Data[row][col] += m.Data[row][i] * n.Data[i][col]
+			}
+		}
+	}
+	return result, nil
+}
