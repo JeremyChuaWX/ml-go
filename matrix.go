@@ -43,14 +43,49 @@ func RandomMatrix(rows int, cols int) *matrix {
 	}
 }
 
-// univariate
-
-func Scale(m *matrix, x float64) {
+func (m *matrix) Scale(x float64) {
 	for r := range m.Rows {
 		for c := range m.Cols {
 			m.Data[r][c] = x * m.Data[r][c]
 		}
 	}
+}
+
+func (m *matrix) Add(n *matrix) error {
+	if m.Cols != n.Cols || m.Rows != n.Rows {
+		return fmt.Errorf("%w: m=%v, n=%v", shapeError, m, n)
+	}
+	for r := range m.Rows {
+		for c := range m.Cols {
+			m.Data[r][c] += n.Data[r][c]
+		}
+	}
+	return nil
+}
+
+func (m *matrix) Subtract(n *matrix) error {
+	if m.Cols != n.Cols || m.Rows != n.Rows {
+		return fmt.Errorf("%w: m=%v, n=%v", shapeError, m, n)
+	}
+	for r := range m.Rows {
+		for c := range m.Cols {
+			m.Data[r][c] -= n.Data[r][c]
+		}
+	}
+	return nil
+}
+
+// Hadamard product (element-wise product)
+func (m *matrix) Multiply(n *matrix) error {
+	if m.Cols != n.Cols || m.Rows != n.Rows {
+		return fmt.Errorf("%w: m=%v, n=%v", shapeError, m, n)
+	}
+	for r := range m.Rows {
+		for c := range m.Cols {
+			m.Data[r][c] *= n.Data[r][c]
+		}
+	}
+	return nil
 }
 
 func Transpose(m *matrix) *matrix {
@@ -62,8 +97,6 @@ func Transpose(m *matrix) *matrix {
 	}
 	return mp
 }
-
-// bivariate
 
 func Equal(m *matrix, n *matrix) (bool, error) {
 	if m.Cols != n.Cols || m.Rows != n.Rows {

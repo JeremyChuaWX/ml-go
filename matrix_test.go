@@ -34,7 +34,7 @@ func TestScale(t *testing.T) {
 		},
 	}
 
-	Scale(result, 2)
+	result.Scale(2)
 	if !reflect.DeepEqual(result, expected) {
 		t.Errorf("Scale(%v, 2) = %v; expected %v", test, result, expected)
 	}
