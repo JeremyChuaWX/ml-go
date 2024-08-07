@@ -8,6 +8,8 @@ import (
 
 var shapeError = errors.New("matrix shapes are incompatible")
 
+var valueMismatchError = errors.New("value mismatch")
+
 type matrix struct {
 	Rows int
 	Cols int
@@ -63,15 +65,32 @@ func Transpose(m *matrix) *matrix {
 
 // bivariate
 
-func Multiply(m *matrix, n *matrix) (*matrix, error) {
+func Equal(m *matrix, n *matrix) (bool, error) {
+	if m.Cols != n.Cols || m.Rows != n.Rows {
+		return false, fmt.Errorf("%w: m=%v, n=%v", shapeError, m, n)
+	}
+	for r := range m.Rows {
+		for c := range m.Cols {
+			if m.Data[r][c] != n.Data[r][c] {
+				return false, fmt.Errorf(
+					"%w (%d, %d): m=%v, n=%v",
+					valueMismatchError, r, c, m.Data[r][c], n.Data[r][c],
+				)
+			}
+		}
+	}
+	return true, nil
+}
+
+func Dot(m *matrix, n *matrix) (*matrix, error) {
 	if m.Cols != n.Rows {
 		return nil, fmt.Errorf("%w: m=%v, n=%v", shapeError, m, n)
 	}
 	result := ZeroMatrix(m.Rows, n.Cols)
-	for row := range result.Rows {
-		for col := range result.Cols {
+	for r := range result.Rows {
+		for c := range result.Cols {
 			for i := 0; i < m.Cols; i++ {
-				result.Data[row][col] += m.Data[row][i] * n.Data[i][col]
+				result.Data[r][c] += m.Data[r][i] * n.Data[i][c]
 			}
 		}
 	}
