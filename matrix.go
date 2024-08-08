@@ -88,6 +88,16 @@ func (m *matrix) Multiply(n *matrix) error {
 	return nil
 }
 
+func Copy(m *matrix) *matrix {
+	cpy := ZeroMatrix(m.Rows, m.Cols)
+	for r := range m.Rows {
+		for c := range m.Cols {
+			cpy.Data[r][c] = m.Data[r][c]
+		}
+	}
+	return cpy
+}
+
 func Transpose(m *matrix) *matrix {
 	mp := ZeroMatrix(m.Cols, m.Rows)
 	for r := range m.Rows {
@@ -96,6 +106,26 @@ func Transpose(m *matrix) *matrix {
 		}
 	}
 	return mp
+}
+
+func RowSum(m *matrix) *matrix {
+	res := ZeroMatrix(m.Rows, 1)
+	for r := range m.Rows {
+		for c := range m.Cols {
+			res.Data[r][0] += m.Data[r][c]
+		}
+	}
+	return res
+}
+
+func ColSum(m *matrix) *matrix {
+	res := ZeroMatrix(1, m.Cols)
+	for r := range m.Rows {
+		for c := range m.Cols {
+			res.Data[0][c] += m.Data[r][c]
+		}
+	}
+	return res
 }
 
 func Equal(m *matrix, n *matrix) (bool, error) {

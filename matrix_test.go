@@ -66,6 +66,55 @@ func TestTranspose(t *testing.T) {
 	}
 }
 
+func TestRowSum(t *testing.T) {
+	test := &matrix{
+		Rows: 2,
+		Cols: 3,
+		Data: [][]float64{
+			{1, 2, 3},
+			{4, 5, 6},
+		},
+	}
+
+	expected := &matrix{
+		Rows: 2,
+		Cols: 1,
+		Data: [][]float64{
+			{6},
+			{15},
+		},
+	}
+
+	result := RowSum(test)
+	if !reflect.DeepEqual(result, expected) {
+		t.Errorf("RowSum(%v) = %v; want %v", test, result, expected)
+	}
+}
+
+func TestColSum(t *testing.T) {
+	test := &matrix{
+		Rows: 2,
+		Cols: 3,
+		Data: [][]float64{
+			{1, 2, 3},
+			{4, 5, 6},
+		},
+	}
+
+	expected := &matrix{
+		Rows: 1,
+		Cols: 3,
+		Data: [][]float64{
+			{5, 7, 9},
+		},
+	}
+
+	result := ColSum(test)
+	if !reflect.DeepEqual(result, expected) {
+		t.Errorf("ColSum(%v) = %v; want %v", test, result, expected)
+	}
+}
+
 func TestEqual(t *testing.T) {
 	m := &matrix{
 		Rows: 2,
