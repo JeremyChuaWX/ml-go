@@ -46,3 +46,11 @@ func (l *linear) backward(y *matrix) *matrix {
 	l.db = RowSum(y)
 	return dx
 }
+
+func (l *linear) update(lr float64) {
+	l.dw.Scale(lr)
+	l.w.Subtract(l.dw)
+
+	l.db.Scale(lr)
+	l.b.Subtract(l.db)
+}
