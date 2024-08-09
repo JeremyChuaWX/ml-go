@@ -37,13 +37,14 @@ func (l *linear) backward(y *matrix) *matrix {
 		slog.Error("backward error calculating dw", "error", err)
 		os.Exit(1)
 	}
+	db := RowSum(y)
 	dx, err := Dot(l.w, y)
 	if err != nil {
 		slog.Error("backward error calculating dx", "error", err)
 		os.Exit(1)
 	}
 	l.dw = dw
-	l.db = RowSum(y)
+	l.db = db
 	return dx
 }
 
