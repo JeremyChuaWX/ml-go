@@ -1,15 +1,20 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	mlgo "ml-go"
 )
 
 func main() {
+	var epochs int
+	flag.IntVar(&epochs, "epochs", 10, "number of epochs [default: 10]")
+	flag.Parse()
+
 	n := mlgo.Network()
 	n.AddLayer(mlgo.Linear(2, 1))
 
-	for i := 0; i < 10; i++ {
+	for i := 0; i < epochs; i++ {
 		fmt.Printf("epoch %d\n", i+1)
 
 		x := mlgo.Matrix([][]float64{{1}, {1}})
