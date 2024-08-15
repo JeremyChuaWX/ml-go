@@ -4,8 +4,8 @@ A machine learning framework written in Go.
 
 ## Features
 
-- Dense layer
+- Linear layer
 - Convolutional layer
-- Linear activation
 - Sigmoid activation
 - ReLU activation
+- MSE cost function
