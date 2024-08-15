@@ -16,6 +16,14 @@ type matrix struct {
 	Data [][]float64 // row by column
 }
 
+func Matrix(data [][]float64) *matrix {
+	return &matrix{
+		Rows: len(data),
+		Cols: len(data[0]),
+		Data: data,
+	}
+}
+
 func ZeroMatrix(rows int, cols int) *matrix {
 	data := make([][]float64, rows)
 	for i := range rows {
